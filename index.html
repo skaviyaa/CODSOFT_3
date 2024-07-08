@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/png" href="favicon.png" />
+
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 320px; /* Adjusted the width for better alignment */
+        }
+
+        .display {
+            background-color: gray;
+            color: #fff;
+            font-size: 2em;
+            text-align: right;
+            padding: 20px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 1px; /* Adding some gap between buttons */
+        }
+
+        .button {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            font-size: 1.5em;
+            padding: 20px;
+            cursor: pointer;
+            outline: none;
+            box-sizing: border-box; /* Ensuring padding doesn't affect size */
+        }
+
+        .button:active {
+            background-color: #f0f0f0;
+        }
+
+        .button:nth-child(4n) {
+            background-color: red;
+            color: #fff;
+        }
+
+        .button:nth-child(4n):active {
+            background-color: #ff9f00;
+        }
+
+        /* Span styles to align special buttons */
+        .span-2 {
+            grid-column: span 2;
+        }
+
+    </style>
+</head>
+<header>
+	</header>
+<body>
+    <div class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="deleteLast()">DEL</button>
+            <button class="button" onclick="appendDigit('.')">.</button>
+			<button class="button" onclick="appendOperator('+')">+</button>
+            <button class="button" onclick="appendDigit(7)">7</button>
+            <button class="button" onclick="appendDigit(8)">8</button>
+            <button class="button" onclick="appendDigit(9)">9</button>
+            <button class="button" onclick="appendOperator('-')">-</button>
+            <button class="button" onclick="appendDigit(4)">6</button>
+            <button class="button" onclick="appendDigit(5)">5</button>
+            <button class="button" onclick="appendDigit(6)">4</button>
+			<button class="button" onclick="appendOperator('*')">*</button>	    
+            <button class="button" onclick="appendDigit(1)">1</button>
+            <button class="button" onclick="appendDigit(2)">2</button>
+            <button class="button" onclick="appendDigit(3)">3</button>	
+            <button class="button" onclick="appendOperator('/')">/</button>	
+            <button class="button " onclick="appendDigit(0)">0</button>
+			<button class="button " onclick="appendDigit('00')">00</button>
+			<button class="button " onclick="appendDigit('000')">000</button>
+			<button class="button " onclick="calculateResult()">=</button>
+				
+			
+            
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '0';
+        let previousInput = '';
+        let operator = '';
+
+        function appendDigit(digit) {
+            if (currentInput === '0' && digit !== '.') {
+                currentInput = digit.toString();
+            } else {
+                currentInput += digit.toString();
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            if (operator) {
+                calculateResult();
+            }
+            previousInput = currentInput;
+            currentInput = '0';
+            operator = op;
+        }
+		function deleteLast(){
+		     currentInput=currentInput.slice(0,-1) || '0' ;
+			 updateDisplay();
+			 }
+        function clearDisplay() {
+            currentInput = '0';
+            previousInput = '';
+            operator = '';
+            updateDisplay();
+        }
+
+        function calculateResult() {
+            if (operator && previousInput !== '') {
+                let result;
+                switch (operator) {
+                    case '+':
+                        result = parseFloat(previousInput) + parseFloat(currentInput);
+                        break;
+                    case '-':
+                        result = parseFloat(previousInput) - parseFloat(currentInput);
+                        break;
+                    case '*':
+                        result = parseFloat(previousInput) * parseFloat(currentInput);
+                        break;
+                    case '/':
+                        result = parseFloat(previousInput) / parseFloat(currentInput);
+                        break;
+                }
+                currentInput = result.toString();
+                previousInput = '';
+                operator = '';
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            display.innerText = currentInput;
+        }
+    </script>
+</body>
+</html>
